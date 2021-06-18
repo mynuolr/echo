@@ -57,4 +57,5 @@ docker_manifests:
       - mynuolr/echo:{{ .Version }}-arm64v8
   - name_template: mynuolr/echo:latest
     image_templates:
-      - mynuolr/echo:{{ .Version }}
+      - mynuolr/echo:{{ .Version }}-amd64
+      - mynuolr/echo:{{ .Version }}-arm64v8
