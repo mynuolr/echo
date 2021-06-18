@@ -41,12 +41,14 @@ dockers:
       - "mynuolr/echo:{{ .Version }}-amd64"
     use_buildx: true
     dockerfile: Dockerfile
+    skip_push: true
     build_flag_templates:
       - "--platform=linux/amd64"
   - image_templates:
       - "mynuolr/echo:{{ .Version }}-arm64v8"
     use_buildx: true
     goarch: arm64
+    skip_push: true
     dockerfile: Dockerfile
     build_flag_templates:
       - "--platform=linux/arm64/v8"
