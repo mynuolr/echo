@@ -34,20 +34,24 @@ func tcpHandler(conn *net.TCPConn) {
 		i, e = conn.Read(buf)
 		conn.LocalAddr()
 		if e != nil {
-			if e != io.EOF {
-				fmt.Printf("LocalAddr:%s, RemoteAddr:%s,Read Err:%e\n", conn.LocalAddr(), conn.RemoteAddr(), e)
-				e = conn.Close()
-				if e != nil {
-					fmt.Printf("LocalAddr:%s, RemoteAddr:%s,Close Err:%e\n", conn.LocalAddr(), conn.RemoteAddr(), e)
+			if e == io.EOF {
+				if i>0 {
+					fmt.Printf("LocalAddr:%s, RemoteAddr:%s,Data:%#v\n", conn.LocalAddr(), conn.RemoteAddr(), buf[:i])
 				}
-				return
 			}
+			fmt.Printf("LocalAddr:%s, RemoteAddr:%s,Read Err:%s\n", conn.LocalAddr(), conn.RemoteAddr(), e)
+			e = conn.Close()
+			if e != nil {
+				fmt.Printf("LocalAddr:%s, RemoteAddr:%s,Close Err:%s\n", conn.LocalAddr(), conn.RemoteAddr(), e)
+			}
+			return
 		}
-
-		fmt.Printf("LocalAddr:%s, RemoteAddr:%s,Data:%#v\n", conn.LocalAddr(), conn.RemoteAddr(), buf[:i])
+		if i>0 {
+			fmt.Printf("LocalAddr:%s, RemoteAddr:%s,Data:%#v\n", conn.LocalAddr(), conn.RemoteAddr(), buf[:i])
+		}
 		_, e = conn.Write(buf[:i])
 		if e != nil {
-			fmt.Printf("LocalAddr:%s, RemoteAddr:%s,Writer Err:%e\n", conn.LocalAddr(), conn.RemoteAddr(), e)
+			fmt.Printf("LocalAddr:%s, RemoteAddr:%s,Writer Err:%s\n", conn.LocalAddr(), conn.RemoteAddr(), e)
 		}
 	}
 }

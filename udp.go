@@ -17,8 +17,11 @@ func udp() {
 	}
 	fmt.Printf("listen UDP :%s\n", ladd)
 	buf:=make([]byte,4096)
+	var t = 0
+	var uadd *net.UDPAddr
+	var e error
 	for {
-		t,uadd, e := list.ReadFromUDP(buf)
+		t,uadd, e = list.ReadFromUDP(buf)
 		if e != nil {
 			if e != io.EOF {
 				fmt.Printf("RemoteAddr:%s,Read Err:%e\n", uadd.String(), e)
